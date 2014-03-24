@@ -424,10 +424,18 @@ static char UIViewIsPanning;
 {
     // Find first responder
     UIView *inputView = [self findFirstResponder];
-    if (inputView != nil) {
+    if (inputView != nil)
+    {
         // Re assign the focus
         [inputView resignFirstResponder];
-        [inputView becomeFirstResponder];
+        if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [inputView becomeFirstResponder];
+            });
+        }
+        else {
+            [inputView becomeFirstResponder];
+        }
     }
 }
 

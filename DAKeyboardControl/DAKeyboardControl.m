@@ -556,6 +556,12 @@ static char UIViewIsPanning;
 
 - (void)setKeyboardActiveInput:(UIResponder *)keyboardActiveInput
 {
+    // https://github.com/danielamitay/DAKeyboardControl/issues/60#issuecomment-39131947
+    if (![keyboardActiveInput respondsToSelector:@selector(window)] ||
+        [(id)keyboardActiveInput window] != self.window)
+    {
+        keyboardActiveInput = nil;
+    }
     [self willChangeValueForKey:@"keyboardActiveInput"];
     objc_setAssociatedObject(self,
                              &UIViewKeyboardActiveInput,
